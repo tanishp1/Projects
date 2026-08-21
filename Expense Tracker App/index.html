@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Good morning</h1>
+        <div class="header-control">
+            <div class="dropdown">
+                Daily <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="date-picker">
+                <i class="fa-regular fa-calendar"></i>
+                21 August 2026
+            </div>
+            <div class="export-btn">
+               <i class="fa-solid fa-download"></i>
+                Export
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Monthly Income</h3>
+                    <button class="card-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="amount">$2,456.00</div>
+                <div class="change">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    12% vs last month
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Monthly Expense</h3>
+                    <button class="card-menu"><i class="fa-solid fa-ellipsis"></i></button>
+                </div>
+                <div class="amount">$1,456.00</div>
+                <div class="change">
+                    <i class="fa-solid fa-arrow-up"></i>
+                    12% vs last month
+                </div>
+            </div>
+            <div class="card my-card">
+                <div class="card-header">
+                    <h3 class="card-title">My Card</h3>
+                    <button class="card-menu" style="color: white;"></button>
+                </div>
+                <div style="font-size: 0.75rem, margin-bottom 1rem;">linked to your primary wallet</div>
+                <div class="card-chip"></div>
+                <div class="card-number">5435 2737 0037 0015</div>
+                <div class="card-holder">Tanish</div>
+                <div class="card-logo">
+                    <div class="card-logo-circle logo-red"></div>
+                    <div class="card-logo-circle logo-orange"></div>
+                </div>
+                <div class="spending-limit">$1,465.00</div>
+                <div class="spending-used">used from $1,065.00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
