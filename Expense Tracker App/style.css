@@ -1,176 +1,349 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
 body {
-    font-family: system-ui, apple-system, BlinkMacSystemFont;
-    background: #f8fafc; 
-    color: #1e293b;
-    line-height: 1.5;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f8fafc;
+  color: #1e293b;
+  line-height: 1.5;
 }
+
+/* ── Header ── */
 .header {
-    background: white;
-    padding: 1.5rem 2rem;
-    border-bottom: 1px solid #e3e8fe;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background: white;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #e3e8fe;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.header h1{
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1e293b;
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
 }
 .header-control {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
-.dropdown{
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.452);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    cursor: pointer;
+.dropdown {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
 }
-.date-picker{
-    background: white;
-    border: 1px solid rgba(0, 0, 0, 0.452);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.date-picker {
+  background: white;
+  border: 1px solid rgba(0,0,0,0.25);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
-.export-btn{
-    background: #ea580c;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
+.export-btn {
+  background: #ea580c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
 }
+.export-btn:hover { background: #c2410c; }
+
+/* ── Main Layout ── */
 .main-content {
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
+
+/* FIX: was display:flex — needs display:grid for grid-template-columns to work */
 .dashboard-grid {
-    display: flex;
-    grid-template-columns: 1fr 1fr 350px;
-    gap: 2rem;
-    margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 350px;
+  gap: 2rem;
 }
+
 .card {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0.1px 3px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 .card-header {
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 .card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #374151;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
 }
 .card-menu {
-    background: none;
-    border: none;
-    color: #9ca3af;
-    cursor: pointer;
-    padding: 0.25rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 0.875rem;
 }
-.amount{
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+
+/* ── Summary Cards ── */
+.amount {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
 }
-.change{
-    font-size: 0.875rem;
-    color: rgba(89, 196, 89);
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+.change {
+  font-size: 0.875rem;
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
 }
+.change.negative { color: #ea580c; }
+
+/* ── My Card ── */
 .my-card {
-    background: linear-gradient(135deg, #059669 0% ,#10b981 100%);
-    color: white;
-    position: relative;
-    overflow: hidden;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
 }
-.card-chip{
-    width: 32px;
-    height: 24px;
-    background: #fbbf24;
-    border-radius: 4px;
-    margin-bottom: 2rem;
-    position: relative;
+.card-chip {
+  width: 32px;
+  height: 24px;
+  background: #fbbf24;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  position: relative;
 }
-.card-chip::after{
-    content: "";
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    right: 4px;
-    bottom: 4px;
-    background: #92400e;
-    border-radius: 2px;
+.card-chip::after {
+  content: "";
+  position: absolute;
+  top: 4px; left: 4px; right: 4px; bottom: 4px;
+  background: #92400e;
+  border-radius: 2px;
 }
-.card.number{
-    font-size: 1.25rem;
-    letter-spacing: 0.1rem;
-    margin-bottom: 1rem;
-    font-family: 'Courier New', Courier, monospace;
+.card-number {
+  font-size: 1.1rem;
+  letter-spacing: 0.1rem;
+  margin-bottom: 0.5rem;
+  font-family: 'Courier New', monospace;
 }
-.card-logo{
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    display: flex;
-    gap: -8px;
+.card-logo {
+  position: absolute;
+  top: 1.5rem;
+  right: 1rem;
+  display: flex;
 }
 .card-logo-circle {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
 }
-.logo-red{
-    background: rgba(255, 0, 0, 0.774);
+.logo-red    { background: rgba(239,68,68,0.85); }
+/* FIX: gap:-8px is invalid on flex — use margin-left instead */
+.logo-orange { background: rgba(251,146,60,0.9); margin-left: -10px; }
+
+.spending-section { margin-top: 1rem; }
+.spending-limit {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
 }
-.logo-orange {
-    background: rgba(255, 166, 0, 0.863);
-    margin-left:-8px;
+.spending-used {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  margin-bottom: 0.5rem;
 }
-.spending-section{
-    margin-top: 2rem;
+.progress-bar {
+  height: 6px;
+  background: #f3f4f6;
+  border-radius: 3px;
+  overflow: hidden;
 }
-.spending-limit{
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1e293b;
+/* Override progress bar bg inside the green card */
+.my-card .progress-bar { background: rgba(255,255,255,0.3); }
+.progress-fill {
+  height: 100%;
+  background: #ea580c;
+  width: 37%;
+  border-radius: 3px;
 }
-.spending-used{
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 0.5rem;
+.my-card .progress-fill { background: white; }
+
+/* ── Chart Section ── */
+.chart-section {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
 }
-.progress-bar{
-    height: 6px;
-    background: #f3f4f6;
-    border-radius: 3px;
-    overflow: hidden;
+
+/* FIX: was .chat-container (typo) */
+.chart-container {
+  padding: 0.5rem 0 0;
 }
-.progress-fill{
-    height: 100%;
-    background: #ea580c;
-    width: 37%;
-    border-radius: 3px;
+
+.bars-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  height: 180px;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+  position: relative;
+  /* push bars to bottom */
+  justify-content: flex-end;
+}
+
+/* FIX: was ".chart-bar .active" (wrong — targets child of .chart-bar)
+   and "linear-gradient(to top #ea580c ...)" was missing comma */
+.chart-bar-income {
+  width: 100%;
+  background: #d1fae5;
+  border-radius: 4px 4px 0 0;
+  transition: background 0.2s;
+}
+.chart-bar-income.active {
+  background: linear-gradient(to top, #059669, #10b981);
+}
+
+.chart-bar-expense {
+  width: 100%;
+  background: #fee2e2;
+  border-radius: 4px 4px 0 0;
+  transition: background 0.2s;
+}
+.chart-bar-expense.active {
+  background: linear-gradient(to top, #c2410c, #ea580c);
+}
+
+/* Tooltip */
+.active-group { position: relative; }
+.tooltip {
+  position: absolute;
+  top: -95px;
+  left: 50%;
+  /* FIX: was translateX(-50) — missing % */
+  transform: translateX(-50%);
+  background: white;
+  padding: 0.4rem 0.65rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 10;
+  line-height: 1.7;
+}
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-bottom: none;
+  border-top-color: white;
+}
+
+.chart-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* ── Category List ── */
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.category-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.category-info { flex: 1; }
+.category-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+.category-amount {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ea580c;
+  white-space: nowrap;
+}
+.cat-bar { background: #f3f4f6; }
+
+/* ── Transactions Table ── */
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.transaction-table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  border-bottom: 1px solid #f3f4f6;
+}
+.transaction-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #f9fafb;
+}
+.transaction-table tr:last-child td { border-bottom: none; }
+.income  { color: #10b981; font-weight: 600; text-align: right; }
+.expense { color: #ea580c; font-weight: 600; text-align: right; }
+.badge {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
 }

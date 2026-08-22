@@ -1,75 +1,245 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expense Tracker</title>
-    <link rel="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="header">
-        <h1>Good morning</h1>
-        <div class="header-control">
-            <div class="dropdown">
-                Daily <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div class="date-picker">
-                <i class="fa-regular fa-calendar"></i>
-                21 August 2026
-            </div>
-            <div class="export-btn">
-               <i class="fa-solid fa-download"></i>
-                Export
-            </div>
-        </div>
+
+  <!-- Header -->
+  <header class="header">
+    <h1> Good Morning</h1>
+    <div class="header-control">
+      <select class="dropdown">
+        <option>Monthly</option>
+        <option>Weekly</option>
+        <option>Yearly</option>
+      </select>
+      <div class="date-picker">📅 Apr 2026</div>
+      <button class="export-btn">⬇ Export</button>
     </div>
-    <div class="main-content">
-        <div class="dashboard-grid">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Monthly Income</h3>
-                    <button class="card-menu"><i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-                <div class="amount">$2,456.00</div>
-                <div class="change">
-                    <i class="fa-solid fa-arrow-up"></i>
-                    12% vs last month
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Monthly Expense</h3>
-                    <button class="card-menu"><i class="fa-solid fa-ellipsis"></i></button>
-                </div>
-                <div class="amount">$1,456.00</div>
-                <div class="change">
-                    <i class="fa-solid fa-arrow-up"></i>
-                    12% vs last month
-                </div>
-            </div>
-            <div class="card my-card">
-                <div class="card-header">
-                    <h3 class="card-title">My Card</h3>
-                    <button class="card-menu" style="color: white;"></button>
-                </div>
-                <div style="font-size: 0.75rem, margin-bottom 1rem;">linked to your primary wallet</div>
-                <div class="card-chip"></div>
-                <div class="card-number">5435 2737 0037 0015</div>
-                <div class="card-holder">Tanish</div>
-                <div class="card-logo">
-                    <div class="card-logo-circle logo-red"></div>
-                    <div class="card-logo-circle logo-orange"></div>
-                </div>
-                <div class="spending-limit">$1,465.00</div>
-                <div class="spending-used">used from $1,065.00</div>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                </div>
-            </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- Summary Cards Row -->
+    <div class="dashboard-grid">
+
+      <!-- Total Income -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Total Income</span>
+          <button class="card-menu">⋯</button>
         </div>
+        <div class="amount" style="color:#10b981">$4,280</div>
+        <div class="change">▲ 12% vs last month</div>
+      </div>
+
+      <!-- Total Expenses -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Total Expenses</span>
+          <button class="card-menu">⋯</button>
+        </div>
+        <div class="amount" style="color:#ea580c">$2,840</div>
+        <div class="change negative">▼ 4% vs last month</div>
+      </div>
+
+      <!-- My Card -->
+      <div class="card my-card">
+        <div class="card-chip"></div>
+        <div class="card-logo">
+          <div class="card-logo-circle logo-red"></div>
+          <div class="card-logo-circle logo-orange"></div>
+        </div>
+        <div class="card-number">4521 •••• •••• 7890</div>
+        <div style="font-size:0.8rem;opacity:0.75;margin-bottom:0.2rem">Card Holder</div>
+        <div style="font-weight:600;margin-bottom:1rem">Tanish Pawar</div>
+        <div class="spending-section">
+          <div class="spending-limit">$1,050 <span style="font-size:0.8rem;font-weight:400;opacity:0.8">/ $2,800</span></div>
+          <div class="spending-used">Monthly spending used</div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+        </div>
+      </div>
+
     </div>
-    <script src="script.js"></script>
+
+    <!-- Chart + Categories Row -->
+    <div class="chart-section">
+
+      <!-- Bar Chart Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Income vs Expenses</span>
+          <button class="card-menu">⋯</button>
+        </div>
+
+        <div class="chart-container">
+          <div class="bars-wrapper">
+
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:90px"></div>
+              <div class="chart-bar-expense" style="height:60px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:110px"></div>
+              <div class="chart-bar-expense" style="height:80px"></div>
+            </div>
+            <!-- Active bar group with tooltip -->
+            <div class="bar-group active-group">
+              <div class="tooltip">
+                <div style="font-weight:600;margin-bottom:2px">April 2026</div>
+                <div style="color:#10b981">Income: $894</div>
+                <div style="color:#ea580c">Expense: $768</div>
+              </div>
+              <div class="chart-bar-income active" style="height:140px"></div>
+              <div class="chart-bar-expense active" style="height:110px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:100px"></div>
+              <div class="chart-bar-expense" style="height:70px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:130px"></div>
+              <div class="chart-bar-expense" style="height:90px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:80px"></div>
+              <div class="chart-bar-expense" style="height:55px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:120px"></div>
+              <div class="chart-bar-expense" style="height:85px"></div>
+            </div>
+            <div class="bar-group">
+              <div class="chart-bar-income" style="height:95px"></div>
+              <div class="chart-bar-expense" style="height:75px"></div>
+            </div>
+
+          </div>
+
+          <div class="chart-label">
+            <span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
+            <span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span>
+          </div>
+        </div>
+
+        <div class="chart-legend">
+          <span class="legend-dot" style="background:#10b981"></span> Income
+          <span class="legend-dot" style="background:#ea580c;margin-left:1rem"></span> Expense
+        </div>
+      </div>
+
+      <!-- Top Categories Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Top Categories</span>
+          <button class="card-menu">⋯</button>
+        </div>
+        <div class="category-list">
+
+          <div class="category-item">
+            <span class="category-icon" style="background:#fef3c7"></span>
+            <div class="category-info">
+              <div class="category-name">Food & Dining</div>
+              <div class="progress-bar cat-bar"><div class="progress-fill" style="width:72%;background:#f59e0b"></div></div>
+            </div>
+            <span class="category-amount">$520</span>
+          </div>
+
+          <div class="category-item">
+            <span class="category-icon" style="background:#ede9fe">🚗</span>
+            <div class="category-info">
+              <div class="category-name">Transport</div>
+              <div class="progress-bar cat-bar"><div class="progress-fill" style="width:45%;background:#8b5cf6"></div></div>
+            </div>
+            <span class="category-amount">$320</span>
+          </div>
+
+          <div class="category-item">
+            <span class="category-icon" style="background:#fee2e2">🛍️</span>
+            <div class="category-info">
+              <div class="category-name">Shopping</div>
+              <div class="progress-bar cat-bar"><div class="progress-fill" style="width:60%;background:#ea580c"></div></div>
+            </div>
+            <span class="category-amount">$430</span>
+          </div>
+
+          <div class="category-item">
+            <span class="category-icon" style="background:#d1fae5">💡</span>
+            <div class="category-info">
+              <div class="category-name">Utilities</div>
+              <div class="progress-bar cat-bar"><div class="progress-fill" style="width:30%;background:#10b981"></div></div>
+            </div>
+            <span class="category-amount">$210</span>
+          </div>
+
+          <div class="category-item">
+            <span class="category-icon" style="background:#dbeafe">🎬</span>
+            <div class="category-info">
+              <div class="category-name">Entertainment</div>
+              <div class="progress-bar cat-bar"><div class="progress-fill" style="width:25%;background:#3b82f6"></div></div>
+            </div>
+            <span class="category-amount">$180</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Recent Transactions</span>
+        <button class="card-menu">View All →</button>
+      </div>
+      <table class="transaction-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th style="text-align:right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pizza Palace</td>
+            <td><span class="badge" style="background:#fef3c7;color:#92400e">Food</span></td>
+            <td>Apr 18, 2026</td>
+            <td class="expense">-$42.00</td>
+          </tr>
+          <tr>
+            <td>Salary Deposit</td>
+            <td><span class="badge" style="background:#d1fae5;color:#065f46">Income</span></td>
+            <td>Apr 15, 2026</td>
+            <td class="income">+$2,400.00</td>
+          </tr>
+          <tr>
+            <td> Electric Bill</td>
+            <td><span class="badge" style="background:#dbeafe;color:#1e40af">Utilities</span></td>
+            <td>Apr 12, 2026</td>
+            <td class="expense">-$95.00</td>
+          </tr>
+          <tr>
+            <td> Grocery Store</td>
+            <td><span class="badge" style="background:#fef3c7;color:#92400e">Food</span></td>
+            <td>Apr 10, 2026</td>
+            <td class="expense">-$138.50</td>
+          </tr>
+          <tr>
+            <td> Spotify</td>
+            <td><span class="badge" style="background:#ede9fe;color:#5b21b6">Entertainment</span></td>
+            <td>Apr 8, 2026</td>
+            <td class="expense">-$9.99</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
 </body>
 </html>
