@@ -14,10 +14,10 @@ const todoSchema = new mongoose.Schema({
 const taskSchema = new mongoose.Schema(
     {
         title: {
-            type: Sting,
+            type: String,
             require: true,
         },
-        descirption: {
+        description: {
             type: String,
         },
         priority: {
@@ -34,13 +34,13 @@ const taskSchema = new mongoose.Schema(
             type: String,
             require: true,
         },
-        assignTo: [
+        assignedTo: [
             {
-                type: mongoose.Schema.Types.ObjectId, ref:'User'
+                type: mongoose.Schema.Types.ObjectId, ref:'Users'
             }
         ],
         createdBy: {
-            type: mongoose.Schema.Types.ObjectId, ref: 'User'
+            type: mongoose.Schema.Types.ObjectId, ref: 'Users'
         },
         attachment: [
             {
@@ -60,4 +60,4 @@ const taskSchema = new mongoose.Schema(
     }
 );
 
-module.exports = mongoose.models('Task', taskSchema)
+module.exports = mongoose.model('Task', taskSchema)
