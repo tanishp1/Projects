@@ -9,14 +9,14 @@ const protect = async (req, res, next) => {
         if(token && token.startsWith('Bearer')){
             token = token.split(" ")[1]; // Extract token
 
-            const decoded = jwt.verify(token, process.env.JWT_SERCET);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
             next();
         }else {
             res.status(401).json({message: "Not authorized, no token"});
         }
     }catch(err){
-        res.status(401).json({messagae: "token failed", err: err.message})
+        res.status(401).json({message: "token failed", err: err.message})
     }
 }
 

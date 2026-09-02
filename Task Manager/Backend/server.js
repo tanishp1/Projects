@@ -21,6 +21,10 @@ app.use(
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files for uploads
+app.use('/uploads', express.static('uploads'));
 
 // ConnectDB
 connectDB();
@@ -30,6 +34,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/report', reportRoutes)
 app.use('/api/tasks', taskRoutes);
 app.use('/api/user', userRoutes);
+
+// Global error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+    res.status(500).json({ message: "Internal server error", error: err.message });
+});
+
+app.use("/upload-image", express.static(path.join(__dirname, "uploads")));
 
 // Start servera
 const PORT = process.env.PORT || 5000;

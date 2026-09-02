@@ -4,7 +4,7 @@ const User = require('../models/Users.js')
 
 // Generate the token 
 const generateToken = (userId) => {
-    return jwt.sign({ id: userId }, process.env.JWT_SERCET, {expiresIn : "7d"})
+    return jwt.sign({ id: userId }, process.env.JWT_SECRET, {expiresIn : "7d"})
 };
 
 // @desc Register a new user
@@ -12,6 +12,7 @@ const generateToken = (userId) => {
 // @access Public
 const registerUser = async (req, res) => {
     try{
+        console.log('Register request received:', req.body);
         const {name, email, password, profileImageUrl, adminInviteToken} = req.body;
 
         // Check if user is already exist
@@ -22,7 +23,7 @@ const registerUser = async (req, res) => {
         }
 
         // determine user role : admin if correct token is provided, otherwise Member
-        let role = "Member"
+        let role = "member"
         if(adminInviteToken && adminInviteToken == process.env.ADMIN_INVITE_TOKEN){
             role = "admin"
         }
@@ -40,6 +41,8 @@ const registerUser = async (req, res) => {
             role,
         });
 
+        console.log('User created:', user);
+
         // return user data with jwt
         return res.status(200).json({
             _id: user._id,
@@ -50,7 +53,8 @@ const registerUser = async (req, res) => {
             token: generateToken(user._id),
         });
     }catch(err){
-        res.status(500).json({ messaage: "Internal server issue", err: err.message})
+        console.error('Register error:', err);
+        res.status(500).json({ message: "Internal server issue", err: err.message})
     }
 };
 
@@ -82,7 +86,7 @@ const loginUser = async(req, res) => {
             token: generateToken(user._id)
         });
     }catch(err){
-        res.status(500).json({ messaage: "Internal server issue", err: err.message})
+        res.status(500).json({ message: "Internal server issue", err: err.message})
     }
 };
 
@@ -92,12 +96,13 @@ const loginUser = async(req, res) => {
 const getUserProfile = async(req, res) => {
     try{
         const user = await User.findById(req.user.id).select('-password');
+        console.log("FETCHED USER FROM DB:", user)
         if(!user){
             return res.status(404).json({message: "user is not found"})
         }
         res.json(user);
     }catch(err){
-        res.status(500).json({ messaage: "Internal server issue", err: err.message})
+        res.status(500).json({ message: "Internal server issue", err: err.message})
     }
 };
 
@@ -118,7 +123,7 @@ const updateUserProfile = async (req, res) => {
             user.password = await bcrypt.hash(req.body.password, salt);
         }
 
-        const updateUser = await User.save();
+        const updateUser = await user.save();
         res.json({
             _id: updateUser._id,
             name: updateUser.name,
@@ -127,7 +132,7 @@ const updateUserProfile = async (req, res) => {
             token: generateToken(updateUser._id)
         });
     }catch(err){
-        res.status(500).json({ messaage: "Internal server issue", err: err.message})
+        res.status(500).json({ message: "Internal server issue", err: err.message})
     }
 };
 
