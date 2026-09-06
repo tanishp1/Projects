@@ -29,7 +29,7 @@ const getTasks = async (req, res) => {
 
         // Status summary count
         const allTasks = await Task.countDocuments(
-            req.user.role == 'Admin' ? {} : {assignedTo: req.user._id}
+            req.user.role === 'admin' ? {} : {assignedTo: req.user._id}
         );
 
         const pendingTask = await Task.countDocuments({
@@ -77,13 +77,24 @@ const getTasksById = async (req, res) => {
 const createTask = async (req, res) => {
     try{
         const {title, description, priority, dueDate, assignedTo, attachment, todoCheckList} = req.body;
-        
+
+        if(!title?.trim() || !description?.trim() || !dueDate){
+            return res.status(400).json({message: "title, description, and dueDate are required"});
+        }
+
         if(!Array.isArray(assignedTo)){
             return res.status(400).json({message: "assignedTo must be an array of user ID's"});
         }
 
         const task = await Task.create({
-            title, description, priority, dueDate, assignedTo, createdBy: req.user._id, todoCheckList, attachment
+            title: title.trim(),
+            description: description.trim(),
+            priority,
+            dueDate,
+            assignedTo,
+            createdBy: req.user._id,
+            todoCheckList: Array.isArray(todoCheckList) ? todoCheckList : [],
+            attachment: Array.isArray(attachment) ? attachment : [],
         });
         return res.status(200).json({message : "Task created successfully", task});
     }catch(error){

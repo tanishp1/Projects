@@ -8,11 +8,11 @@ export const API_PATHS = {
     },
     
     USER: {
-        GET_ALL_USERS: "/api/users",
-        GET_USER_BY_ID: (userId) => `/api/users/${userId}`,
-        CREATE_USER: "/api/users",
-        UPDATE_USER: (userId) => `/api/users/${userId}`,
-        DELETE_USER: (userId) => `/api/users/${userId}`,
+        GET_ALL_USERS: "/api/user",
+        GET_USER_BY_ID: (userId) => `/api/user/${userId}`,
+        CREATE_USER: "/api/user",
+        UPDATE_USER: (userId) => `/api/user/${userId}`,
+        DELETE_USER: (userId) => `/api/user/${userId}`,
     },
 
     TASK: {
@@ -28,8 +28,8 @@ export const API_PATHS = {
     },
 
     REPORTS: {
-        EXPORT_TASKS: "/api/reports/tasks",
-        EXPORT_USERS: "/api/reports/users"
+        EXPORT_TASKS: "/api/report/export/tasks",
+        EXPORT_USERS: "/api/report/export/users"
     },
 
     IMAGES: {

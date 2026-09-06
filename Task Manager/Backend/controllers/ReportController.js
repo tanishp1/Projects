@@ -31,7 +31,7 @@ const exportTaskReport = async(req, res) => {
                 description: task.description,
                 priority: task.priority,
                 status: task.status,
-                dueDate: task.dueDate.toISOString().split("T")[0],
+                dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
                 assignedTo: assignedTo || 'Unassigned',
             });
         });

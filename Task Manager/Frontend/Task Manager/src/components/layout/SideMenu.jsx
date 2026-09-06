@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/useContext'
 import { SIDE_MENU_DATA, SIDE_MENU_USER_DATA } from '../../utils/data';
+import { LuUser } from 'react-icons/lu';
 
 const SideMenu = ({activeMenu}) => {
   const { user, clearUser } = useContext(UserContext);
@@ -36,7 +37,13 @@ const SideMenu = ({activeMenu}) => {
     <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-15.25 z-20'>
       <div className='flex flex-col items-center justify-center mb-7 pt-5'>
         <div className='Relative'>
-          <img src={user?.profileImageUrl || ""} alt='Profile image' className='w-20 h-20 bg-slate-400 rounded-full'/>
+          {user?.profileImageUrl ? (
+            <img src={user.profileImageUrl} alt='Profile image' className='w-20 h-20 bg-slate-400 rounded-full object-cover'/>
+          ) : (
+            <div className='flex w-20 h-20 items-center justify-center rounded-full bg-slate-200'>
+              <LuUser className='text-4xl text-slate-400' />
+            </div>
+          )}
         </div>
 
         {user?.role === "admin" && (
