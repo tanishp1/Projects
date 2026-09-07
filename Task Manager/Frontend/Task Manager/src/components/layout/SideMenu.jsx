@@ -1,44 +1,40 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { UserContext } from '../../context/useContext'
 import { SIDE_MENU_DATA, SIDE_MENU_USER_DATA } from '../../utils/data';
+import { getImageUrl } from '../../utils/helper';
 import { LuUser } from 'react-icons/lu';
 
 const SideMenu = ({activeMenu}) => {
   const { user, clearUser } = useContext(UserContext);
-  const [ sideMenuData, setSideMenuData ] = useState([]);
+  const location = useLocation();
+  const isUserRoute = location.pathname.startsWith('/users');
+  const isAdmin = !isUserRoute && String(user?.role || '').trim().toLowerCase() === 'admin';
+  const sideMenuData = isAdmin ? SIDE_MENU_DATA : SIDE_MENU_USER_DATA;
 
   const navigate = useNavigate();
 
   const handleClick = (route) => {
     if(route === 'logout'){
-      handelLogout();
+      handleLogout();
       return;
     }
 
     navigate(route);
   };
 
-  const handelLogout = () => {
+  const handleLogout = () => {
     localStorage.clear();
     clearUser();
     navigate('/login');
   };
 
-  useEffect(() => {
-    if(user){
-      setSideMenuData(user?.role === 'admin' ? SIDE_MENU_DATA : SIDE_MENU_USER_DATA)
-    }
-
-    return () => {};
-  },[user])
-
   return (
-    <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-15.25 z-20'>
+    <div className='w-64 shrink-0 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-15.25 z-20'>
       <div className='flex flex-col items-center justify-center mb-7 pt-5'>
         <div className='Relative'>
           {user?.profileImageUrl ? (
-            <img src={user.profileImageUrl} alt='Profile image' className='w-20 h-20 bg-slate-400 rounded-full object-cover'/>
+            <img src={getImageUrl(user.profileImageUrl)} alt='Profile image' className='w-20 h-20 bg-slate-400 rounded-full object-cover'/>
           ) : (
             <div className='flex w-20 h-20 items-center justify-center rounded-full bg-slate-200'>
               <LuUser className='text-4xl text-slate-400' />
@@ -46,7 +42,7 @@ const SideMenu = ({activeMenu}) => {
           )}
         </div>
 
-        {user?.role === "admin" && (
+        {isAdmin && (
           <div className='text-[10px] font-meduim text-white bg-primary px-3 py-0.5 rounded mt-1'>
             Admin
           </div>
@@ -59,13 +55,13 @@ const SideMenu = ({activeMenu}) => {
         <p className='text-[12px] text-gray-500'>{user?.email || ""}</p>
       </div>
 
-      {sideMenuData.map((item, index) => {
+      {sideMenuData.map((item) => {
         return(
-          <button key={`menu_${index}`} 
-        className={`w-full flex item-center gap-4 text-[15px] 
+          <button type="button" key={item.id}
+        className={`w-full flex items-center gap-4 text-[15px] 
         ${activeMenu == item.label ? 
         "text-primary bg-linear-to-r from-blue-50/40 to-blue-100/50 border-r-3" : ""}
-        py-3 px-6 mb-3 cursor-pointer`}onClick={() => handleClick(item.path)}>
+        py-3 px-6 mb-3 cursor-pointer`} onClick={() => handleClick(item.path)}>
 
           <item.icon className='text-xl'/>
           {item.label}

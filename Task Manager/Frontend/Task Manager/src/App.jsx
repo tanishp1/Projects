@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { BrowserRouter as Router, Routes, Route, Outlet, Navigate} from 'react-router-dom'
 
 import Login from './pages/Auth/Login'
@@ -37,6 +37,7 @@ const App = () => {
         <Route element={<PrivateRoute allowedRole={['admin']}/>}/>
         <Route path='/users/dashboard' element={<UsersDashboard/>}/>
         <Route path='/users/tasks' element={<MyTask/>}/>
+        <Route path='/users/create-task' element={<CreateTask/>}/>
         <Route path='/users/task-details/:id' element={<ViewsDetails/>}/>
 
         {/* Default Route */}

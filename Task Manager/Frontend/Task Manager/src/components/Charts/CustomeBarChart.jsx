@@ -1,17 +1,17 @@
-import React from 'react'
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 const CustomeBarChart = ({data}) => {
+    const hasData = data?.some((entry) => Number(entry.count) > 0);
 
     // function to alternate colors
     const getBarColor = (entry) => {
         switch (entry?.priority) {
             case 'low':
                 return '#00BC7D'
-            case 'meduim':
+            case 'medium':
                 return '#FE9900'
             case 'high':
-                return 'FF1F57'
+                return '#FF1F57'
             default:
                 return '#00BC7D'
         }
@@ -35,7 +35,15 @@ const CustomeBarChart = ({data}) => {
         }
         return null;
     }
-  return (
+    if (!hasData) {
+        return (
+            <div className="mt-6 flex h-[300px] items-center justify-center text-sm text-slate-400">
+                No task data yet.
+            </div>
+        );
+    }
+
+    return (
     <div className='bg-white mt-6'>
       <ResponsiveContainer width='100%' height={300}>
         <BarChart data={data}>
@@ -53,9 +61,9 @@ const CustomeBarChart = ({data}) => {
                 activeDot={{ r: 8, fill: 'yellow'}} 
                 activeStyle={{ fill: 'green'}}
                 >
-                    {data.map((entry, index) => {
+                    {data.map((entry, index) => (
                         <Cell key={index} fill={getBarColor(entry)}/>
-                    })}
+                    ))}
                 </Bar>
         </BarChart>
       </ResponsiveContainer>

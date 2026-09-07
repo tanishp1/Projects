@@ -6,6 +6,7 @@ import Dashboardlayout from "../../components/layout/Dashboardlayout";
 import Axiosinstance from "../../utils/Axiosinstance";
 import { API_PATHS } from "../../utils/ApiPath";
 import { useNavigate } from "react-router-dom";
+import { getImageUrl } from "../../utils/helper";
 
 const ManageTask = () => {
   const taskTabs = [
@@ -188,7 +189,7 @@ const ManageTask = () => {
                           <>
                             <div className="flex -space-x-2">
                               {task.assignedTo.slice(0, 3).map((user) => user.profileImageUrl ? (
-                                <img key={user._id} src={user.profileImageUrl} alt={user.name || "Assignee"} className="h-7 w-7 rounded-full border-2 border-white object-cover" />
+                                <img key={user._id} src={getImageUrl(user.profileImageUrl)} alt={user.name || "Assignee"} className="h-7 w-7 rounded-full border-2 border-white object-cover" />
                               ) : <span key={user._id} className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-slate-200"><LuUser /></span>)}
                             </div>
                             <span>{task.assignedTo.length} assigned</span>

@@ -3,6 +3,7 @@ import Dashboardlayout from "../../components/layout/Dashboardlayout";
 import toast from "react-hot-toast";
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { PRIORITY_DATA } from "../../utils/data";
 import SelectDropdown from "../../components/inputs/SelectDropdown";
@@ -10,12 +11,15 @@ import SelectUsers from "../../components/inputs/SelectUsers";
 import Axiosinstance from "../../utils/Axiosinstance";
 import { API_PATHS } from "../../utils/ApiPath";
 import uploadImage from "../../utils/uploadImage";
+import { UserContext } from "../../context/useContext";
 
 const CreateTask = () => {
   const location = useLocation();
   const { taskId } = location.state || {};
 
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const isMember = user?.role !== "admin";
 
   const [taskData, setTaskData] = useState({
     title: "",
@@ -78,10 +82,11 @@ const CreateTask = () => {
   };
 
   const createTask = async () => {
-    await Axiosinstance.post(API_PATHS.TASK.CREATE_TASK, taskData);
+    const payload = isMember ? { ...taskData, assignedTo: [user._id] } : taskData;
+    await Axiosinstance.post(API_PATHS.TASK.CREATE_TASK, payload);
     toast.success("Task created successfully");
     clearData();
-    navigate("/admin/tasks");
+    navigate(isMember ? "/users/tasks" : "/admin/tasks");
   };
 
   //Update tasks
@@ -100,8 +105,6 @@ const CreateTask = () => {
     if (!taskData.description.trim()) validationErrors.description = "Description is required.";
     if (!taskData.dueDate) validationErrors.dueDate = "Due date is required.";
     else if (moment(taskData.dueDate).isBefore(today, "day")) validationErrors.dueDate = "Due date cannot be in the past.";
-    if (!taskData.assignedTo.length) validationErrors.assignedTo = "Assign at least one team member.";
-
     setFieldErrors(validationErrors);
     return Object.keys(validationErrors).length === 0;
   };
@@ -165,7 +168,7 @@ const CreateTask = () => {
   }, [taskId]);
 
   return (
-    <Dashboardlayout activeMenu="Create Task">
+    <Dashboardlayout activeMenu={isMember ? "My Tasks" : "Create Task"}>
       <form onSubmit={handleSubmit} className="mt-5">
         <div className="grid grid-cols-1 md:grid-cols-4 mt-4">
           <div className="form-card col-span-3">
@@ -244,7 +247,7 @@ const CreateTask = () => {
                    {fieldErrors.dueDate && <p className="mt-1 text-xs text-rose-500">{fieldErrors.dueDate}</p>}
               </div>
 
-              <div className="col-span-12 md:col-snap-12">
+              {!isMember && <div className="col-span-12 md:col-snap-12">
                 <label className="text-xs font-medium text-slate-600">
                   Assign To
                 </label>
@@ -256,7 +259,7 @@ const CreateTask = () => {
                    }}
                    />
                    {fieldErrors.assignedTo && <p className="mt-1 text-xs text-rose-500">{fieldErrors.assignedTo}</p>}
-              </div>
+              </div>}
 
               <div className="col-span-12 md:col-span-6 mt-2">
                 <label className="text-xs font-medium text-slate-600">Checklist</label>
@@ -284,7 +287,7 @@ const CreateTask = () => {
             </div>
             {error && <p className="mt-4 text-sm text-rose-500">{error}</p>}
             <div className="mt-6 flex justify-end gap-3">
-              <button type="button" className="card-btn" onClick={() => navigate("/admin/tasks")}>Cancel</button>
+              <button type="button" className="card-btn" onClick={() => navigate(isMember ? "/users/tasks" : "/admin/tasks")}>Cancel</button>
               <button type="submit" className="btn-primary w-auto" disabled={loading}>{loading ? "Saving..." : taskId ? "Update task" : "Create task"}</button>
             </div>
           </div>

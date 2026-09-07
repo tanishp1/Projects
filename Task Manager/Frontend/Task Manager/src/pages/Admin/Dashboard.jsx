@@ -7,7 +7,7 @@ import Axiosinstance from '../../utils/Axiosinstance';
 import { API_PATHS } from '../../utils/ApiPath';
 import moment from 'moment'
 import { addThousandsSeparator } from '../../utils/helper';
-import InfoCard from '../../components/Cards/infoCard';
+import InfoCard from '../../components/Cards/InfoCard';
 import { LuArrowRight } from 'react-icons/lu';
 import { useNavigate } from 'react-router-dom';
 import TaskListTable from '../../components/TaskListTable';

@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Task = require('../models/Task');
 
 //@desc     GET all task (Admin: all, User: only assign task)
@@ -71,9 +72,9 @@ const getTasksById = async (req, res) => {
     }
 }
 
-//@desc     Create a new task (admin only)
+//@desc     Create a new task
 //@route    POST/api/tasks/
-//@access   Private(Admin)
+//@access   Private
 const createTask = async (req, res) => {
     try{
         const {title, description, priority, dueDate, assignedTo, attachment, todoCheckList} = req.body;
@@ -82,16 +83,20 @@ const createTask = async (req, res) => {
             return res.status(400).json({message: "title, description, and dueDate are required"});
         }
 
-        if(!Array.isArray(assignedTo)){
+        if(req.user.role === 'admin' && assignedTo !== undefined && !Array.isArray(assignedTo)){
             return res.status(400).json({message: "assignedTo must be an array of user ID's"});
         }
+
+        const taskAssignees = req.user.role === 'admin'
+            ? (Array.isArray(assignedTo) ? assignedTo : [])
+            : [req.user._id];
 
         const task = await Task.create({
             title: title.trim(),
             description: description.trim(),
             priority,
             dueDate,
-            assignedTo,
+            assignedTo: taskAssignees,
             createdBy: req.user._id,
             todoCheckList: Array.isArray(todoCheckList) ? todoCheckList : [],
             attachment: Array.isArray(attachment) ? attachment : [],
@@ -156,6 +161,11 @@ const deleteTask = async (req, res) => {
 //@access   Private
 const updateTaskStatus = async (req, res) => {
     try{
+        const allowedStatuses = ['Pending', 'In Progress', 'Completed'];
+        if(req.body.status && !allowedStatuses.includes(req.body.status)){
+            return res.status(400).json({message: 'Invalid task status'});
+        }
+
         const task = await Task.findById(req.params.id);
 
         if(!task)
@@ -172,6 +182,7 @@ const updateTaskStatus = async (req, res) => {
         task.status = req.body.status || task.status;
 
         if(task.status == 'Completed'){
+            task.todoCheckList = task.todoCheckList || [];
             task.todoCheckList.forEach((item)=>(item.completed = true));
             task.progress = 100;
         }
@@ -189,13 +200,21 @@ const updateTaskStatus = async (req, res) => {
 const updateTaskChecklist = async (req, res) => {
     try{
         const {todoCheckList} = req.body;
+        if(!Array.isArray(todoCheckList)){
+            return res.status(400).json({message: 'todoCheckList must be an array'});
+        }
+
         const task = await Task.findById(req.params.id);
 
         if(!task){
             return res.status(400).json({message: 'Task not found'}) ;      
         };
 
-        if(!task.assignedTo.includes(req.user._id)&& req.user.role !== 'admin'){
+        const isAssigned = task.assignedTo.some(
+            (userId) => userId.toString() === req.user._id.toString()
+        );
+
+        if(!isAssigned && req.user.role !== 'admin'){
             return res.status(403).json({message: 'not authorized '});
         };
 
@@ -301,7 +320,7 @@ const getDashboardData = async(req, res) => {
 const getUserDashboardData = async(req, res) => {
     try{
 
-        const userId = req.user._id;
+        const userId = new mongoose.Types.ObjectId(String(req.user._id));
 
         // fetching statistics for user-specific tasks
         const totalTask = await Task.countDocuments({assignedTo: userId});

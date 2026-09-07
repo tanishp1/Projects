@@ -38,17 +38,17 @@ export const  SIDE_MENU_USER_DATA = [
         id: "01",
         label: "Dashboard",
         icon: LuLayoutDashboard,
-        path: '/user/dashboard',
+        path: '/users/dashboard',
     },
     {
         id: "02",
         label: "My Tasks",
         icon: LuClipboardCheck,
-        path: '/user/tasks'
+        path: '/users/tasks'
     },
     {
         id: "05",
-        label: "LogOut",
+        label: "Logout",
         icon: LuLogOut,
         path: 'logout',
     },
@@ -83,4 +83,3 @@ export const STATUS_DATA = [
         value: "Completed",
     },
 ];
-

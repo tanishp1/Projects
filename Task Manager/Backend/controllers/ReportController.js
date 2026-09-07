@@ -19,20 +19,31 @@ const exportTaskReport = async(req, res) => {
             {header: 'Description', key: 'description', width: 50},
             {header: 'Priority', key: 'priority', width: 15},
             {header: 'Status', key: 'status', width: 20},
+            {header: 'Created date', key: 'createdAt', width: 20},
             {header: 'Due date', key: 'dueDate', width: 20},
             {header: 'Assigned To', key: 'assignedTo', width: 20},
+            {header: 'Checklist progress', key: 'checklistProgress', width: 25},
+            {header: 'Attachments', key: 'attachments', width: 40},
         ];
 
         tasks.forEach((task) =>{
-            const assignedTo = task.assignedTo.map((user)=> `${user.name} (${user.email})`).join(" ");
+            const assignedTo = (task.assignedTo || [])
+                .filter((user) => user)
+                .map((user)=> `${user.name} (${user.email})`)
+                .join(", ");
+            const checklist = task.todoCheckList || [];
+            const completedChecklist = checklist.filter((item) => item.completed).length;
             worksheet.addRow({
                 _id: task._id,
                 title: task.title,
-                description: task.description,
+                description: task.description || "",
                 priority: task.priority,
                 status: task.status,
+                createdAt: task.createdAt ? new Date(task.createdAt).toISOString().split("T")[0] : "",
                 dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "",
                 assignedTo: assignedTo || 'Unassigned',
+                checklistProgress: checklist.length ? `${completedChecklist}/${checklist.length} completed` : "No checklist",
+                attachments: (task.attachment || []).join(", "),
             });
         });
 
@@ -92,9 +103,9 @@ const exportUserReport = async(req, res) => {
             {header: 'User Name', key: 'name', width: 25},
             {header: 'Email', key: 'email', width: 30},
             {header: 'Total Assigned task', key: 'taskCount', width: 50},
-            {header: 'Pending Task', key: 'pendingTasks', width: 15},
-            {header: 'In Progress Task', key: 'inProgressTasks', width: 20},
-            {header: 'Completed Tasks', key: 'completedTasks', width: 20},
+            {header: 'Pending Task', key: 'pendingTask', width: 15},
+            {header: 'In Progress Task', key: 'inProgressTask', width: 20},
+            {header: 'Completed Tasks', key: 'completedTask', width: 20},
         ];
 
         Object.values(userTaskMap).forEach((user) => {
@@ -102,7 +113,7 @@ const exportUserReport = async(req, res) => {
         });
 
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', 'attachment; filename="tasks-report.xlsx"');
+        res.setHeader('Content-Disposition', 'attachment; filename="users-report.xlsx"');
 
         await workbook.xlsx.write(res);
         res.end();

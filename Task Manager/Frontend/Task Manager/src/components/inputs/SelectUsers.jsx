@@ -3,6 +3,7 @@ import Axiosinstance from '../../utils/Axiosinstance';
 import { API_PATHS } from '../../utils/ApiPath';
 import { LuUser } from 'react-icons/lu';
 import Modal from '../Modal';
+import { getImageUrl } from '../../utils/helper';
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
@@ -40,7 +41,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
     const selectedUserAvatars = allUsers
     .filter((user) => selectedUsers.includes(user._id))
-    .map((user) => user.profileImageUrl);
+    .map((user) => getImageUrl(user.profileImageUrl));
 
     useEffect(() => {
         // Fetching users populates the selector after the request completes.
@@ -71,7 +72,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                     {allUsers.map((user) => (
                         <label key={user._id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-slate-100 p-3 hover:bg-slate-50">
                             <input type="checkbox" checked={tempSelectedUsers.includes(user._id)} onChange={() => toggleUserSelection(user._id)} />
-                            {user.profileImageUrl ? <img src={user.profileImageUrl} alt="" className="h-8 w-8 rounded-full object-cover" /> : <span className="h-8 w-8 rounded-full bg-slate-200" />}
+                            {user.profileImageUrl ? <img src={getImageUrl(user.profileImageUrl)} alt="" className="h-8 w-8 rounded-full object-cover" /> : <span className="h-8 w-8 rounded-full bg-slate-200" />}
                             <span className="text-sm text-slate-700">{user.name}</span>
                         </label>
                     ))}
